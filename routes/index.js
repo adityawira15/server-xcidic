@@ -39,7 +39,7 @@ router.post('/adddata', (req, res) => {
     tools: req.body.tools,
     presentations: req.body.presentations
   }
-  let date = moment().format('DD/MM/YYYY')
+  let date = moment().format('MM/DD/YYYY')
   pool.query(`SELECT * FROM users WHERE email = '${data.email}'`, (err, val) => {
     if(err){
       throw err
@@ -51,7 +51,6 @@ router.post('/adddata', (req, res) => {
     }else{
       pool.query(`INSERT INTO data(name, email, disease, diseases, tools, presentations, date, userid) VALUES('${data.name}', '${data.email}', '${data.disease}', '${JSON.stringify(data.diseases)}', '${JSON.stringify(data.tools)}', '${JSON.stringify(data.presentations)}', '${date}', ${val.rows[0].id} )`, (err) => {
         if (err) throw err
-        console.log('masuk')
         pool.query(`SELECT * FROM data WHERE email = '${data.email}'`, (err, user) => {
           if(err) throw err
           res.json({
