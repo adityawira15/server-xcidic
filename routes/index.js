@@ -4,10 +4,10 @@ var { Pool } = require('pg')
 var moment = require('moment')
 
 const pool = new Pool({
-  user: 'postgres',
-  host: 'localhost',
-  database: 'xcidic',
-  password: 'AdItYa15:)',
+  user: 'hztmrvmdvdrjkr',
+  host: 'ec2-23-21-238-28.compute-1.amazonaws.com',
+  database: 'd6naj6qrkitt4',
+  password: '8ae87f55b1b89bba83ce7348b1ee0ea6fba622b6089467c38abf2fb0e61ad7c7',
   port: '5432'
 })
 
