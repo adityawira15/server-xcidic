@@ -51,6 +51,7 @@ router.post('/adddata', (req, res) => {
     }else{
       pool.query(`INSERT INTO data(name, email, disease, diseases, tools, presentations, date, userid) VALUES('${data.name}', '${data.email}', '${data.disease}', '${JSON.stringify(data.diseases)}', '${JSON.stringify(data.tools)}', '${JSON.stringify(data.presentations)}', '${date}', ${val.rows[0].id} )`, (err) => {
         if (err) throw err
+        console.log('masuk')
         pool.query(`SELECT * FROM data WHERE email = '${data.email}'`, (err, user) => {
           if(err) throw err
           res.json({
