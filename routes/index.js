@@ -84,8 +84,9 @@ router.post('/editdata/:id', (req, res) => {
 })
 
 router.delete('/deletedata/:id', (req, res) => {
-  pool.query(`DELETE FROM data WHERE id = ${req.query.id}`, (err, val) => {
-    res.json(val.rows)
+  pool.query(`DELETE FROM data WHERE id = ${req.params.id}`, (err) => {
+    if(err) throw err
+    res.json({message: 'Delete Success!'})
   })
 })
 
