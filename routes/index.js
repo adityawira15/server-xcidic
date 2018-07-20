@@ -17,7 +17,7 @@ router.get('/', function (req, res, next) {
 });
 
 router.get('/patient', (req, res) => {
-  pool.query("SELECT id, firstname || ' ' || lastname as fullname, email FROM users WHERE type = 'Patient'", (err, val) => {
+  pool.query("SELECT id, firstname || ' ' || lastname as fullname, email FROM users WHERE type = 'Patient' ORDER BY fullname ASC", (err, val) => {
     if(err) throw err
     res.json(val.rows)
   })
