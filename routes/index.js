@@ -18,14 +18,14 @@ router.get('/', function (req, res, next) {
 
 router.get('/patient', (req, res) => {
   pool.query("SELECT id, firstname || ' ' || lastname as fullname, email FROM users WHERE type = 'Patient' ORDER BY fullname ASC", (err, val) => {
-    if(err) throw err
+    if (err) throw err
     res.json(val.rows)
   })
 })
 
 router.get('/datapatient/:id', (req, res) => {
   pool.query(`SELECT * FROM data WHERE userid = ${req.params.id}`, (err, val) => {
-    if(err) throw err
+    if (err) throw err
     res.json(val.rows)
   })
 })
@@ -41,18 +41,18 @@ router.post('/adddata', (req, res) => {
   }
   let date = moment().format('MM/DD/YYYY')
   pool.query(`SELECT * FROM users WHERE email = '${data.email}'`, (err, val) => {
-    if(err){
+    if (err) {
       throw err
-    }else if(val.rows.length === 0){
+    } else if (val.rows.length === 0) {
       res.json({
         status: false,
         message: 'Email Not Listed!'
       })
-    }else{
+    } else {
       pool.query(`INSERT INTO data(name, email, disease, diseases, tools, presentations, date, userid) VALUES('${data.name}', '${data.email}', '${data.disease}', '${JSON.stringify(data.diseases)}', '${JSON.stringify(data.tools)}', '${JSON.stringify(data.presentations)}', '${date}', ${val.rows[0].id} )`, (err) => {
         if (err) throw err
         pool.query(`SELECT * FROM data WHERE email = '${data.email}'`, (err, user) => {
-          if(err) throw err
+          if (err) throw err
           res.json({
             status: true,
             message: 'Success Add !',
@@ -66,27 +66,24 @@ router.post('/adddata', (req, res) => {
 
 router.get('/detail/:id', (req, res) => {
   pool.query(`SELECT * FROM data WHERE id = ${req.params.id}`, (err, val) => {
-    if(err) throw err
-    res.json({data: val.rows[0]})
-  })
-})
-
-router.get('/editdata/:id', (req, res) => {
-  pool.query(`SELECT * FROM data WHERE id = ${req.query.id}`, (err, val) => {
-    res.json(val.rows)
+    if (err) throw err
+    res.json({ data: val.rows[0] })
   })
 })
 
 router.post('/editdata/:id', (req, res) => {
-  pool.query(`UPDATE data SET column1 = ${req.body} WHERE id = ${req.query.id}`, (err, val) => {
-    res.json(val.rows)
+  pool.query(`UPDATE data SET disease = '${req.body.disease}', diseases = '${JSON.stringify(req.body.diseases)}', tools = '${JSON.stringify(req.body.tools)}', presentations = '${JSON.stringify(req.body.presentations)}'  WHERE id = ${req.params.id}`, (err, val) => {
+    if(err) throw err
+    res.json({
+      message: 'Update Success!'
+    })
   })
 })
 
 router.delete('/deletedata/:id', (req, res) => {
   pool.query(`DELETE FROM data WHERE id = ${req.params.id}`, (err) => {
-    if(err) throw err
-    res.json({message: 'Delete Success!'})
+    if (err) throw err
+    res.json({ message: 'Delete Success!' })
   })
 })
 
